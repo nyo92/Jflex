@@ -1,0 +1,37 @@
+package br.com.compiler.scanner;
+%%
+%public
+%class LexicalAnalyzerExample
+%{
+private void print_value(String lexema, String tipo) {
+ System.out.println(lexema + " - " + tipo);
+}
+%}
+%int
+%line
+%column
+
+ABREPARENTESES = [\(]*
+FECHAPARENTESES= [\)]*
+PONTÊNCIA = "**"
+MULTIPLICACAO = "*"
+DIVISÃO = "/"
+SOMA = "+"
+SUBTRACAO = "-"
+INTEIROPOSITIVO = 0|[1-9][0-9]*
+INTEIRONEGATIVO = \-\d*\d
+BRANCO = [\n| |\t\r]
+
+%%
+
+{BRANCO}                        { System.out.println(yytext() + " - " + "ESPAÇO EM BRANCO"); }
+{ABREPARENTESES}                { print_value(yytext(), "ABRE PARÊNTESES"); }
+{FECHAPARENTESES}               { print_value(yytext(), "FECHA PARÊNTESES"); }
+{PONTÊNCIA}                     { print_value(yytext(), "PONTÊNCIA"); }
+{MULTIPLICACAO}                 { print_value(yytext(), "MULTIPLICAÇÃO"); }
+{DIVISÃO}                       { print_value(yytext(), "DIVISÃO"); }
+{SOMA}                          { print_value(yytext(), "ADIÇÃO"); }
+{SUBTRACAO}                     { print_value(yytext(), "SUBTRAÇÃO"); }
+{INTEIROPOSITIVO}               { print_value(yytext(), "NÚMERO POSITIVO"); }
+{INTEIRONEGATIVO}               { print_value(yytext(), "NÚMERO NEGATIVO"); }
+. { throw new RuntimeException("Caractere inválidos " + yytext()); }
